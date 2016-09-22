@@ -1,0 +1,52 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.0.RELEASE'
+	}
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.springframework:springloaded:1.2.4.RELEASE'
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+jar {
+	baseName = 'ipmonitor'
+	version = '0.0.1-SNAPSHOT'
+	manifest {
+		attributes 'Main-Class': 'com.example.monitor.IpMonitorApplication'
+	}
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	jcenter()
+}
+
+idea {
+	module {
+		inheritOutputDirs = false
+		outputDir = file("$buildDir/classes/main/")
+	}
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.cloud:spring-cloud-starter')
+	compile('org.springframework.boot:spring-boot-starter-freemarker')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.SR5"
+	}
+}
