@@ -41,14 +41,14 @@ public class MonitorService {
         return ipList;
     }
 
-    public static void main(String args[]) {
-        MonitorService monitorService = new MonitorService();
-        List<String> list = monitorService.getIpList();
-
-        list.forEach(i -> {
-            System.out.println(i);
-        });
-    }
+//    public static void main(String args[]) {
+//        MonitorService monitorService = new MonitorService();
+//        List<String> list = monitorService.getIpList();
+//
+//        list.forEach(i -> {
+//            System.out.println(i);
+//        });
+//    }
 
     public static boolean ping(String ipAddress) {
         int  timeOut =  3000 ;

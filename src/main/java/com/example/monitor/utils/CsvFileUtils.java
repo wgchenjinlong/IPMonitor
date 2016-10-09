@@ -26,12 +26,12 @@ public class CsvFileUtils {
     private CsvFileUtils() {
     }
 
-    public static void main(String[] args) {
-        // String argPath = "D:/test/435453453.csv";
-        String argPath = "D:/Filetemplet/specialbooklist/bookticket/583/20111229032100027/hhhhhhh.csv";
-
-        readCsvFile(argPath, "utf-8");
-    }
+//    public static void main(String[] args) {
+//        // String argPath = "D:/test/435453453.csv";
+//        String argPath = "D:/Filetemplet/specialbooklist/bookticket/583/20111229032100027/hhhhhhh.csv";
+//
+//        readCsvFile(argPath, "utf-8");
+//    }
 
     /**
      * csv文件读取<BR/>
