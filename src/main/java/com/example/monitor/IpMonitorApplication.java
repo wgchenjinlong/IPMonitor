@@ -4,19 +4,15 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
 import javax.xml.soap.SOAPPart;
 
 @SpringBootApplication
-public class IpMonitorApplication implements EmbeddedServletContainerCustomizer {
+@ServletComponentScan
+public class IpMonitorApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(IpMonitorApplication.class, args);
-	}
-
-	@Override
-	public void customize(ConfigurableEmbeddedServletContainer container) {
-		container.setPort(8081);
-		System.out.println("ssssss");
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(IpMonitorApplication.class, args);
+    }
 }

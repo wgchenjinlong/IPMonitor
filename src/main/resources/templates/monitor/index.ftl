@@ -12,12 +12,13 @@
     </button>
 </div>
 <div class="table-responsive">
-    <table class="table table-bordered table-hover" id="monitor-table">
+    <table class="table table-hover" id="monitor-table">
         <thead>
         <tr>
             <th>序号</th>
             <th>IP地址</th>
             <th>状态</th>
+            <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
                 <td>${ipInfo?counter}</td>
                 <td class="ip-address" data-address="${ipInfo.ipAddress!}">${ipInfo.ipAddress!}</td>
                 <td class="status">${ipInfo.status.statusName!}</td>
+                <td><a href="#">删除</a></td>
             </tr>
         </#list>
         </tbody>

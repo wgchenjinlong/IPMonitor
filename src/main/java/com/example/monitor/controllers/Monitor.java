@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by chenjinlong on 16/9/19.
- */
 @Controller
 public class Monitor {
 
