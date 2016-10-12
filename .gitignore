@@ -31,3 +31,4 @@ Vagrantfile
 
 *.log
 data/
+.project
