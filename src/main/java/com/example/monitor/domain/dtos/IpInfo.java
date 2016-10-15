@@ -1,4 +1,4 @@
-package com.example.monitor.models.dtos;
+package com.example.monitor.domain.dtos;
 
 /**
  * Created by chenjinlong on 16/9/20.

@@ -1,8 +1,5 @@
-package com.example.monitor.models;
+package com.example.monitor.domain;
 
-/**
- * Created by chenjinlong on 16/9/20.
- */
 public enum IpStatus {
 
     ERROR("异常","danger"),

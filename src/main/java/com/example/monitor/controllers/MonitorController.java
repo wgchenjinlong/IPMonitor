@@ -1,7 +1,7 @@
 package com.example.monitor.controllers;
 
-import com.example.monitor.models.IpStatus;
-import com.example.monitor.models.dtos.IpInfo;
+import com.example.monitor.domain.IpStatus;
+import com.example.monitor.domain.dtos.IpInfo;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class Monitor {
+public class MonitorController {
 
     @Autowired
     private MonitorService monitorService;
@@ -31,31 +31,13 @@ public class Monitor {
             ipInfo.setStatus(IpStatus.NORMAL);
             list.add(ipInfo);
         });
-        System.out.println(11);
+        System.out.println(111);
         model.put("ipInfos", list);
         return "monitor/index";
     }
 
-//    @RequestMapping("/ping")
-//    @ResponseBody
-//    public List<IpInfo> ping() {
-//        List<IpInfo> list = new ArrayList();
-//        List<String> ipList = monitorService.getIpList();
-//
-//        ipList.forEach(i -> {
-//            IpInfo ipInfo = new IpInfo();
-//            ipInfo.setIpAddress(i);
-//            boolean pingResult = monitorService.ping(i);
-//            ipInfo.setStatus(pingResult ? IpStatus.NORMAL : IpStatus.ERROR);
-//            ipInfo.setColor(pingResult ? IpStatus.NORMAL.getColor() : IpStatus.ERROR.getColor());
-//            ipInfo.setStatusName(pingResult ? IpStatus.NORMAL.getStatusName() : IpStatus.ERROR.getStatusName());
-//            list.add(ipInfo);
-//        });
-//        return list;
-//    }
-
-    @RequestMapping("/monitor/ping")
     @ResponseBody
+    @RequestMapping("/monitor/ping")
     public IpInfo ping(@RequestParam String ipAddress) {
         IpInfo ipInfo = new IpInfo();
         ipInfo.setIpAddress(ipAddress);
