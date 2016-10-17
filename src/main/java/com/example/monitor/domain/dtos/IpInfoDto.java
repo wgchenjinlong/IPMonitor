@@ -3,7 +3,9 @@ package com.example.monitor.domain.dtos;
 /**
  * Created by chenjinlong on 16/9/20.
  */
-public class IpInfo {
+public class IpInfoDto {
+
+    private Integer id;
 
     private String ipAddress;
 
@@ -43,5 +45,13 @@ public class IpInfo {
 
     public void setStatus(Enum status) {
         this.status = status;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

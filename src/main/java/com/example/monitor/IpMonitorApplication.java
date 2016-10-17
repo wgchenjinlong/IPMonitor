@@ -7,8 +7,6 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-@Configuration
-@EnableAutoConfiguration
 @ServletComponentScan
 public class IpMonitorApplication {
 

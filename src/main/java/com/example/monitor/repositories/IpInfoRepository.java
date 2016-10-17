@@ -2,6 +2,8 @@ package com.example.monitor.repositories;
 
 import com.example.monitor.domain.models.IpInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -10,5 +12,6 @@ import java.util.List;
  */
 public interface IpInfoRepository extends JpaRepository<IpInfo, Integer> {
 
-    public List<IpInfo> findAll();
+    @Query("from IpInfo info where info.ipAddr = :ipAddr")
+    List<IpInfo> findByIp(@Param("ipAddr") String ipAddr);
 }
