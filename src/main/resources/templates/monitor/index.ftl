@@ -74,5 +74,5 @@
         </div>
     </div>
 </div>
-    <@lib.deleteDialog baseUrl="/cjl/monitor/delete"/>
+    <@lib.deleteDialog baseUrl="/monitor/delete"/>
 </@l.layout>

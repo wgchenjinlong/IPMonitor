@@ -1,0 +1,20 @@
+* text eol=lf
+
+gradlew text eol=lf
+
+*.jar binary
+*.xpi binary
+
+*.jpg   binary
+*.png   binary
+*.gif   binary
+
+*.eot   binary
+*.ttf   binary
+*.woff   binary
+*.woff2   binary
+*.ttf   binary
+*.otf   binary
+*.mdb   binary
+*.xlsx	binary
+*.xls	binary
