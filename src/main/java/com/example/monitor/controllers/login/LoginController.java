@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +33,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView login(@Valid LoginForm loginForm, BindingResult result) {
+    public ModelAndView login(@Valid LoginForm loginForm, BindingResult result, HttpServletRequest request) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("login", loginForm);
@@ -56,6 +57,8 @@ public class LoginController {
 
             User user = users.get(0);
             if (loginForm.getPassword().equals(user.getPassword())) {
+
+                request.getSession().setAttribute("currentUser", user);
 
                 // 成功，将用户信息保存到session
                 return new ModelAndView(new RedirectView("/monitor", true));
