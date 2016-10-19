@@ -10,3 +10,7 @@
     font-weight: 400;
     margin-right: 5px;
 }
+
+.parsley-errors-list {
+    color: #B94A48;
+}
