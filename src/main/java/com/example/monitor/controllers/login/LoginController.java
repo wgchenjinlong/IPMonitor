@@ -31,7 +31,7 @@ public class LoginController {
         map.put("login", loginForm);
         return new ModelAndView("login/login", map);
     }
-
+    
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(@Valid LoginForm loginForm, BindingResult result, HttpServletRequest request) {
 

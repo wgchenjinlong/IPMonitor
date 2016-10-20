@@ -1,38 +1,21 @@
-package com.example.monitor.domain.models;
+package com.example.monitor.domain.forms;
 
-import javax.persistence.*;
+import org.hibernate.validator.constraints.NotBlank;
+
 import javax.validation.constraints.Max;
 
 /**
- * Created by Administrator on 2016/10/15.
+ * Created by Administrator on 2016/10/20.
  */
-@Entity
-@Table(name = "ip_info")
-public class IpInfo {
+public class IpInfoForm {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(nullable = false)
+    @NotBlank
     @Max(value = 20)
     private String ipAddr;
-
-    @Basic
     @Max(value = 100)
     private String name;
-
-    @Basic
     @Max(value = 500)
     private String commit;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getIpAddr() {
         return ipAddr;

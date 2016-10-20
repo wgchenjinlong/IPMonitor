@@ -2,16 +2,19 @@ package com.example.monitor.controllers;
 
 import com.example.monitor.domain.IpStatus;
 import com.example.monitor.domain.dtos.IpInfoDto;
+import com.example.monitor.domain.forms.IpInfoForm;
 import com.example.monitor.domain.models.IpInfo;
 import com.example.monitor.repositories.IpInfoRepository;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,37 +57,36 @@ public class MonitorController {
     }
 
     @RequestMapping(value = "/monitor/add", method = RequestMethod.POST)
-    public Map<String, Object> create(@RequestParam String ipAddr,
-                                      @RequestParam String name,
-                                      @RequestParam String commit) {
+    public ModelAndView create(@Valid IpInfoForm ipInfoForm, BindingResult result, RedirectAttributes attr) {
+
+        if (result.hasErrors()) {
+            attr.addFlashAttribute("error", "添加失败");
+            return new ModelAndView(new RedirectView("/monitor", true));
+        }
 
         IpInfo ipInfo = new IpInfo();
-        ipInfo.setIpAddr(ipAddr);
-        ipInfo.setName(name);
-        ipInfo.setCommit(commit);
+        ipInfo.setIpAddr(ipInfoForm.getIpAddr());
+        ipInfo.setName(ipInfoForm.getName());
+        ipInfo.setCommit(ipInfoForm.getCommit());
         ipInfoRepository.save(ipInfo);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("status", "success");
-
-        return result;
+        attr.addFlashAttribute("success", "添加成功");
+        return new ModelAndView(new RedirectView("/monitor", true));
     }
 
     @RequestMapping(value = "/monitor/delete/{id}", method = RequestMethod.DELETE)
-    public ModelAndView delete(@PathVariable Integer id) {
+    public ModelAndView delete(@PathVariable Integer id, RedirectAttributes attr) {
 
         if (id == null) {
-            // error
+            attr.addFlashAttribute("error", "删除失败");
         }
-
         IpInfo ipInfo = ipInfoRepository.findOne(id);
         if (ipInfo == null) {
-            // error
+            attr.addFlashAttribute("error", "删除失败");
         } else {
-
             ipInfoRepository.delete(id);
+            attr.addFlashAttribute("success", "删除成功");
         }
 
-        return new ModelAndView(new RedirectView("/monitor", true));
+        return new ModelAndView(new RedirectView("/monitor"));
     }
 }

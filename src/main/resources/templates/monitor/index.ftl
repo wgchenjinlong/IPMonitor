@@ -46,23 +46,31 @@
                 <h4 class="modal-title" id="addModalLabel">添加IP</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal add-ip-form" data-parsley-validate>
                     <div class="form-group">
                         <label class="col-md-3 control-label asterisk" for="ipAddr">IP地址</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" id="ipAddr">
+                            <input type="text" class="form-control" id="ipAddr" name="ipAddr"
+                                   required
+                                   maxlength="20"
+                                   data-parsley-pattern="((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))"
+                                   data-parsley-pattern-message="请输入一个合法的IP地址">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="name">名称</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" id="name">
+                            <input type="text" class="form-control" id="name" name="name"
+                                   maxlength="100"
+                                   data-parsley-maxlength="100">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="commit">备注</label>
                         <div class="col-md-7">
-                            <input type="text" class="form-control" id="commit">
+                            <input type="text" class="form-control" id="commit" name="commit"
+                                   maxlength="500"
+                                   data-parsley-maxlength="500">
                         </div>
                     </div>
                 </form>

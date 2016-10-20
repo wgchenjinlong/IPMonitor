@@ -13,4 +13,14 @@
 
 .parsley-errors-list {
     color: #B94A48;
+    padding: 0px;
+}
+
+.parsley-errors-list li {
+    list-style-type:none;
+}
+
+.alert {
+    min-width: 400px;
+    text-align: center;
 }
