@@ -5,7 +5,25 @@ $(function () {
     $save.on('click', function () {
         addIp();
     });
+
+    $('.sound-icon').click(function () {
+        if (isPlay) {
+            pauseSound();
+            isPlay = false;
+            $(this).removeClass('glyphicon-volume-up');
+            $(this).addClass('glyphicon-volume-off');
+        } else {
+            playSound();
+            isPlay = true;
+            $(this).removeClass('glyphicon-volume-off');
+            $(this).addClass('glyphicon-volume-up');
+        }
+    });
 });
+
+var hasError = false;
+var isPlay = false;
+var audioElement = null;
 
 var ping = function () {
     $ipAddresses = $('.ip-address');
@@ -26,6 +44,16 @@ var ping = function () {
                         $statusTd.html(data['statusName']);
                     }
                 });
+                if (data['status'] == 'ERROR') {
+                    var $soundIcon = $('.sound-icon');
+                    $soundIcon.css('display', 'block');
+                    createAudio();
+                    if (!hasError) {
+                        playSound();
+                    }
+                    hasError = true;
+                    isPlay = true;
+                }
             }
         });
     });
@@ -33,25 +61,21 @@ var ping = function () {
 };
 
 var addIp = function () {
-
     $form = $(".add-ip-form");
     $form.attr("action", "/monitor/add")
         .attr("method", "post")
         .submit();
-    // var ipAddr = $("#ipAddr").val();
-    // var name = $("#name").val();
-    // var commit = $("#commit").val();
-    // var $modal = $('#addModal');
-    //
-    // $.post("monitor/add", {"ipAddr": ipAddr, "name": name, "commit": commit}, function (data) {
-    //
-    //     var status = data["status"];
-    //     var message = data["message"];
-    //     if (status == "success") {
-    //         $modal.modal('hide');
-    //         jQuery.message.success(message);
-    //     } else if (status == "error") {
-    //         jQuery.message.error(message);
-    //     }
-    // });
-}
+};
+var createAudio = function () {
+    if (audioElement == null) {
+        audioElement = document.createElement('audio');
+        audioElement.setAttribute('src', 'files/error.mp3');
+        audioElement.setAttribute('loop', 'loop');
+    }
+};
+var playSound = function () {
+    audioElement.play();
+};
+var pauseSound = function () {
+    audioElement.pause();
+};

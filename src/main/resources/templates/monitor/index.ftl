@@ -7,7 +7,9 @@
 </#assign>
 <@l.layout title="IP监控" header=header footer=footer>
 <h2 class="sub-header">监控列表</h2>
-<div class="text-right btn-toolbar">
+<div class="text-right btn-toolbar row">
+    <div class="col-md-1 text-left"><span class="glyphicon glyphicon-volume-up sound-icon"
+                                          style="font-size: 27px;color: #1A1806;display: none;"></span></div>
     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
         <i class="glyphicon glyphicon-plus"></i> 添加
     </button>
