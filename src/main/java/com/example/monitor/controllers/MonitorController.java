@@ -7,16 +7,22 @@ import com.example.monitor.domain.models.IpInfo;
 import com.example.monitor.repositories.IpInfoRepository;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 public class MonitorController {
@@ -56,10 +62,86 @@ public class MonitorController {
         return ipInfo;
     }
 
+    @RequestMapping(value = "/monitor/validate", method = RequestMethod.POST)
+    public Map<String, String> validate(@RequestParam String ipAddr, @RequestParam String name, @RequestParam String commit) {
+
+        String checkIpAddr = checkIpAddr(ipAddr);
+        String checkName = checkName(name);
+        String checkCommit = checkCommit(commit);
+
+        Map<String, String> map = new HashMap<>();
+        if (!StringUtils.isEmpty(checkIpAddr)) {
+            map.put("ipAddr", checkIpAddr);
+        }
+        if (!StringUtils.isEmpty(checkName)) {
+            map.put("name", checkName);
+        }
+        if (!StringUtils.isEmpty(checkCommit)) {
+            map.put("commit", checkCommit);
+        }
+        return map;
+    }
+
+    private String checkIpAddr(String ipAddr) {
+
+        String msg = "";
+        if (StringUtils.isEmpty(ipAddr)) {
+            msg = "不能为空";
+        } else {
+            String pattern = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
+            Pattern r = Pattern.compile(pattern);
+            Matcher matcher = r.matcher(ipAddr);
+
+            if (!matcher.find()) {
+                msg = "请输入一个合法的IP地址";
+            } else {
+                List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddr);
+                int size = ipInfos.size();
+                if (size > 0) {
+                    msg = "该IP已经被监控，请输入一个新的IP地址";
+                }
+            }
+        }
+        return msg;
+    }
+
+//    public static void main(String args[]) {
+//        String ipAddr = "192";
+//        String pattern = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
+//        Pattern r = Pattern.compile(pattern);
+//        Matcher matcher = r.matcher(ipAddr);
+//
+//        if (matcher.find()) {
+//            System.out.println("11111111111");
+//            System.out.println(matcher.group());
+//            System.out.println("22222222222");
+//        }
+//
+//    }
+    private String checkName(String name) {
+        String msg = "";
+        if (!StringUtils.isEmpty(name) && name.length() > 100) {
+            msg = "名称不能超过100个字符";
+        }
+        return msg;
+    }
+
+    private String checkCommit(String commit) {
+        String msg = "";
+        if (!StringUtils.isEmpty(commit) && commit.length() > 500) {
+            msg = "名称不能超过500个字符";
+        }
+        return msg;
+    }
+
     @RequestMapping(value = "/monitor/add", method = RequestMethod.POST)
     public ModelAndView create(@Valid IpInfoForm ipInfoForm, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
+            for (FieldError field: result.getFieldErrors()) {
+
+                System.out.println(field.getDefaultMessage());
+            }
             attr.addFlashAttribute("error", "添加失败");
             return new ModelAndView(new RedirectView("/monitor", true));
         }

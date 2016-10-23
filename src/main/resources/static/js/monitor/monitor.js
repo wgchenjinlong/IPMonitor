@@ -3,7 +3,7 @@ $(function () {
     setTimeout(ping, 20000);
     var $save = $('#save');
     $save.on('click', function () {
-        addIp();
+        validateIpInfo();
     });
 
     $('.sound-icon').click(function () {
@@ -58,6 +58,57 @@ var ping = function () {
         });
     });
     setTimeout(ping, 20000);
+};
+
+var validateIpInfo = function () {
+
+    var $ipAddr = $("#ipAddr");
+    var $name = $("#name");
+    var $commit = $("#commit");
+
+    var ipAddr = $ipAddr.val();
+    var name = $name.val();
+    var commit = $commit.val();
+
+    var result = true;
+    $.post("monitor/validate", {"ipAddr": ipAddr, "name": name, "commit": commit}, function (data) {
+
+        var ipAddrResult = data['ipAddr'];
+        var nameResult = data['name'];
+        var commitResult = data['commit'];
+
+        if (ipAddrResult) {
+            $ipAddr.next().remove();
+            $ipAddr.after('<ul class="parsley-errors-list filled monitor-errors">' +
+                '<li class="parsley-required">' +
+                ipAddrResult +
+                '</li>' +
+                '</ul>');
+            result = false;
+        }
+        if (nameResult) {
+            $name.next().remove();
+            $name.after('<ul class="parsley-errors-list filled monitor-errors">' +
+                '<li class="parsley-required">' +
+                nameResult +
+                '</li>' +
+                '</ul>');
+            result = false;
+        }
+        if (commitResult) {
+            $commit.next().remove();
+            $commit.after('<ul class="parsley-errors-list filled monitor-errors">' +
+                '<li class="parsley-required">' +
+                commitResult +
+                '</li>' +
+                '</ul>');
+            result = false;
+        }
+        if (result) {
+            addIp();
+        }
+    });
+    return result;
 };
 
 var addIp = function () {

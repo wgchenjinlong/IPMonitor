@@ -14,16 +14,15 @@ public class IpInfo {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(nullable = false)
-    @Max(value = 20)
+    @Column(nullable = false, length = 20)
     private String ipAddr;
 
     @Basic
-    @Max(value = 100)
+    @Column(length = 100)
     private String name;
 
     @Basic
-    @Max(value = 500)
+    @Column(length = 500)
     private String commit;
 
     public Integer getId() {

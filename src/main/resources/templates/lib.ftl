@@ -36,7 +36,7 @@
 <#macro error for="" message="">
 <#--<@validationError field=for>-->
     <#if message != "">
-    <ul class="parsley-errors-list filled urp-errors">
+    <ul class="parsley-errors-list filled monitor-errors">
         <li class="parsley-required">
         ${message}
         </li>

@@ -1,5 +1,6 @@
 package com.example.monitor.domain.forms;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.Max;
@@ -10,11 +11,11 @@ import javax.validation.constraints.Max;
 public class IpInfoForm {
 
     @NotBlank
-    @Max(value = 20)
+    @Length(max = 20)
     private String ipAddr;
-    @Max(value = 100)
+    @Length(max = 100)
     private String name;
-    @Max(value = 500)
+    @Length(max = 500)
     private String commit;
 
     public String getIpAddr() {
