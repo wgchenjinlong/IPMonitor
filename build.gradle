@@ -52,7 +52,4 @@ dependencyManagement {
 	}
 }
 
-bootRepackage {
-	mainClass = 'com.exapmle.monitor.IpMonitorApplication'
-}
 

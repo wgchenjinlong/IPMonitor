@@ -16,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -105,19 +104,6 @@ public class MonitorController {
         return msg;
     }
 
-//    public static void main(String args[]) {
-//        String ipAddr = "192";
-//        String pattern = "((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))";
-//        Pattern r = Pattern.compile(pattern);
-//        Matcher matcher = r.matcher(ipAddr);
-//
-//        if (matcher.find()) {
-//            System.out.println("11111111111");
-//            System.out.println(matcher.group());
-//            System.out.println("22222222222");
-//        }
-//
-//    }
     private String checkName(String name) {
         String msg = "";
         if (!StringUtils.isEmpty(name) && name.length() > 100) {
