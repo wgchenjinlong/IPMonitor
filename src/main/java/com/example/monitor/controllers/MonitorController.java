@@ -38,13 +38,15 @@ public class MonitorController {
         List<IpInfoDto> list = new ArrayList();
         List<IpInfo> ipList = monitorService.getIpList();
 
-        ipList.forEach(i -> {
+        for(IpInfo i : ipList) {
             IpInfoDto ipInfo = new IpInfoDto();
             ipInfo.setId(i.getId());
             ipInfo.setIpAddress(i.getIpAddr());
             ipInfo.setStatus(IpStatus.NORMAL);
+            ipInfo.setName(i.getName());
+            ipInfo.setCommit(i.getCommit());
             list.add(ipInfo);
-        });
+        }
         model.put("ipInfos", list);
         return new ModelAndView("monitor/index", model);
     }

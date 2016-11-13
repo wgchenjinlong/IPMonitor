@@ -10,19 +10,24 @@ $(function () {
         if (isPlay) {
             pauseSound();
             isPlay = false;
+            isManual = true;
             $(this).removeClass('glyphicon-volume-up');
             $(this).addClass('glyphicon-volume-off');
         } else {
-            playSound();
-            isPlay = true;
+            if (hasError) {
+                playSound();
+                isPlay = true;
+            }
+            isManual = false;
             $(this).removeClass('glyphicon-volume-off');
             $(this).addClass('glyphicon-volume-up');
         }
     });
 });
 
-var hasError = false;
 var isPlay = false;
+var isManual = false;
+var hasError = false;
 var audioElement = null;
 
 var ping = function () {
@@ -44,15 +49,22 @@ var ping = function () {
                         $statusTd.html(data['statusName']);
                     }
                 });
-                if (data['status'] == 'ERROR') {
-                    var $soundIcon = $('.sound-icon');
-                    $soundIcon.css('display', 'block');
+                //var $soundIcon = $('.sound-icon');
+                hasError = isShowSound();
+                if (hasError) {
+                    //$soundIcon.css('display', 'block');
                     createAudio();
-                    if (!hasError) {
+                    if (!isPlay && !isManual) {
                         playSound();
+                        isPlay = true;
                     }
-                    hasError = true;
-                    isPlay = true;
+
+                } else {
+                    //$soundIcon.css('display', 'none');
+                    if(isPlay) {
+                        pauseSound();
+                    }
+                    isPlay = false;
                 }
             }
         });
@@ -130,3 +142,14 @@ var playSound = function () {
 var pauseSound = function () {
     audioElement.pause();
 };
+var isShowSound = function () {
+    var isShow = false;
+    var $trs = $("#monitor-table tbody tr");
+    $trs.each(function () {
+        if($(this).hasClass('danger')) {
+            isShow = true;
+        }
+    });
+
+    return isShow;
+}

@@ -3,13 +3,15 @@
 <#assign header>
 </#assign>
 <#assign footer>
-<script src="js/monitor/monitor.js"></script>
+<script src="/js/monitor/monitor.js"></script>
 </#assign>
 <@l.layout title="IP监控" header=header footer=footer>
 <h2 class="sub-header">监控列表</h2>
 <div class="text-right btn-toolbar row">
-    <div class="col-md-1 text-left"><span class="glyphicon glyphicon-volume-up sound-icon"
-                                          style="font-size: 27px;color: #1A1806;display: none;"></span></div>
+    <div class="col-md-1 text-left">
+        <span class="glyphicon glyphicon-volume-up sound-icon"
+              style="font-size: 27px;color: #1A1806;"></span>
+    </div>
     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addModal">
         <i class="glyphicon glyphicon-plus"></i> 添加
     </button>
@@ -17,21 +19,25 @@
 <div class="table-responsive">
     <table class="table table-hover" id="monitor-table">
         <thead>
-        <tr>
-            <th>序号</th>
-            <th>IP地址</th>
-            <th>状态</th>
-            <th>操作</th>
-        </tr>
+            <tr>
+                <th>序号</th>
+                <th width="20%">名称</th>
+                <th>IP地址</th>
+                <th>状态</th>
+                <th width="30%">备注</th>
+                <th>操作</th>
+            </tr>
         </thead>
         <tbody>
             <#list ipInfos as ipInfo>
             <tr class="${ipInfo.status.color!}">
                 <td>${ipInfo?counter}</td>
+                <td>${ipInfo.name!}</td>
                 <td class="ip-address" data-address="${ipInfo.ipAddress!}">${ipInfo.ipAddress!}</td>
                 <td class="status">${ipInfo.status.statusName!}</td>
-                <td> <a href="#" data-id="${(ipInfo.id)!}" data-toggle="modal"
-                        data-target="#deleteModal">
+                <td>${ipInfo.commit!}</td>
+                <td><a href="#" data-id="${(ipInfo.id)!}" data-toggle="modal"
+                       data-target="#deleteModal">
                     删除</a></td>
             </tr>
             </#list>

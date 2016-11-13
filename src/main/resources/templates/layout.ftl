@@ -8,9 +8,9 @@
     <title>${title}</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/dashboard.css" rel="stylesheet">
-    <link href="css/common/common.css" rel="stylesheet">
+    <link href="${springMacroRequestContext.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${springMacroRequestContext.contextPath}/css/dashboard.css" rel="stylesheet">
+    <link href="${springMacroRequestContext.contextPath}/css/common/common.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,10 +18,10 @@
     <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="js/vendor/jquery.min.js"></script>
-    <script src="js/vendor/parsley/parsley.js"></script>
-    <script src="js/vendor/parsley/parsley.remote.js"></script>
-    <script src="js/vendor/parsley/zh_cn.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/vendor/jquery.min.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/vendor/parsley/parsley.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/vendor/parsley/parsley.remote.js"></script>
+    <script src="${springMacroRequestContext.contextPath}/js/vendor/parsley/zh_cn.js"></script>
 ${header}
 </head>
 <body>
@@ -56,9 +56,16 @@ ${header}
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-            <ul class="nav nav-sidebar">
-                <li class="active"><a href="monitor">监控列表</a></li>
-            <#--<li><a href="#">Reports</a></li>-->
+            <ul class="nav nav-sidebar left-nav-menu">
+                <li
+                    <#if springMacroRequestContext.requestUri?contains("/monitor")>
+                            class="active"
+                    </#if>
+                        ><a href="/monitor">监控列表</a></li>
+                <li<#if springMacroRequestContext.requestUri?contains("/help")>
+                        class="active"
+                    </#if>
+                ><a href="/help">帮助</a></li>
             <#--<li><a href="#">Analytics</a></li>-->
             <#--<li><a href="#">Export</a></li>-->
             </ul>
@@ -82,9 +89,9 @@ ${header}
 </div>
 
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/vendor/bootstrap.min.js"></script>
-<script src="js/vendor/bootstrap-growl.js"></script>
-<script src="js/common/message.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/vendor/bootstrap.min.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/vendor/bootstrap-growl.js"></script>
+<script src="${springMacroRequestContext.contextPath}/js/common/message.js"></script>
 ${footer}
     <#if success??>
     <script type="text/javascript">
