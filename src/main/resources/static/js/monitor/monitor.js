@@ -1,5 +1,6 @@
 ;
 $(function () {
+    ping();
     setTimeout(ping, 20000);
     var $save = $('#save');
     $save.on('click', function () {

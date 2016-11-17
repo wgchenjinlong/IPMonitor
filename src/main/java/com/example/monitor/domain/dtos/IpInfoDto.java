@@ -19,6 +19,16 @@ public class IpInfoDto {
 
     private String commit;
 
+    private String lost;
+
+    public String getLost() {
+        return lost;
+    }
+
+    public void setLost(String lost) {
+        this.lost = lost;
+    }
+
     public String getName() {
         return name;
     }

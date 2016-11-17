@@ -1,6 +1,7 @@
 package com.example.monitor.controllers;
 
 import com.example.monitor.domain.IpStatus;
+import com.example.monitor.domain.PingResult;
 import com.example.monitor.domain.dtos.IpInfoDto;
 import com.example.monitor.domain.forms.IpInfoForm;
 import com.example.monitor.domain.models.IpInfo;
@@ -42,7 +43,7 @@ public class MonitorController {
             IpInfoDto ipInfo = new IpInfoDto();
             ipInfo.setId(i.getId());
             ipInfo.setIpAddress(i.getIpAddr());
-            ipInfo.setStatus(IpStatus.NORMAL);
+            ipInfo.setStatus(IpStatus.UNMONITOR);
             ipInfo.setName(i.getName());
             ipInfo.setCommit(i.getCommit());
             list.add(ipInfo);
@@ -56,10 +57,17 @@ public class MonitorController {
 
         IpInfoDto ipInfo = new IpInfoDto();
         ipInfo.setIpAddress(ipAddress);
-        boolean pingResult = monitorService.ping(ipAddress);
-        ipInfo.setStatus(pingResult ? IpStatus.NORMAL : IpStatus.ERROR);
-        ipInfo.setColor(pingResult ? IpStatus.NORMAL.getColor() : IpStatus.ERROR.getColor());
-        ipInfo.setStatusName(pingResult ? IpStatus.NORMAL.getStatusName() : IpStatus.ERROR.getStatusName());
+//        boolean pingResult = monitorService.ping(ipAddress);
+//        ipInfo.setStatus(pingResult ? IpStatus.NORMAL : IpStatus.ERROR);
+//        ipInfo.setColor(pingResult ? IpStatus.NORMAL.getColor() : IpStatus.ERROR.getColor());
+//        ipInfo.setStatusName(pingResult ? IpStatus.NORMAL.getStatusName() : IpStatus.ERROR.getStatusName());
+
+        PingResult pingResult = monitorService.ping(ipAddress, 10, 3000);
+        ipInfo.setStatus(pingResult.getNetworkStatus());
+        ipInfo.setColor(pingResult.getColor());
+        ipInfo.setStatusName(pingResult.getStatusName());
+        ipInfo.setLost(pingResult.getLost());
+
         return ipInfo;
     }
 
