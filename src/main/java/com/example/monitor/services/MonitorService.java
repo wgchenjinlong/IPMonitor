@@ -2,8 +2,11 @@ package com.example.monitor.services;
 
 import com.example.monitor.domain.PingResult;
 import com.example.monitor.domain.models.IpInfo;
+import com.example.monitor.domain.models.PingIpResult;
 import com.example.monitor.repositories.IpInfoRepository;
+import com.example.monitor.repositories.PingIpResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -19,6 +22,9 @@ public class MonitorService {
 
     @Autowired
     private IpInfoRepository ipInfoRepository;
+
+    @Autowired
+    private PingIpResultRepository pingIpResultRepository;
 
     public List<IpInfo> getIpList() {
 
@@ -58,8 +64,8 @@ public class MonitorService {
             while ((line = in.readLine()) != null) {
                 connectedCount += getCheckResult(line);
             }
-            pingResult.setLost(connectedCount/pingTimes);
-            pingResult.setNetworkStatus(connectedCount/pingTimes);
+            pingResult.setLost(connectedCount / pingTimes);
+            pingResult.setNetworkStatus(connectedCount / pingTimes);
 
 
             return pingResult;
@@ -75,6 +81,23 @@ public class MonitorService {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Async
+    public void asyncPing(String ipAddress, int pingTimes, int timeOut) {
+        PingResult pingResult = ping(ipAddress, pingTimes, timeOut);
+        List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddress);
+        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfos.get(0).getId());
+        if (results.size() != 0) {
+            pingIpResultRepository.delete(results.get(0));
+        }
+        PingIpResult pingIpResult = new PingIpResult();
+        pingIpResult.setLost(pingResult.getLost());
+        pingIpResult.setColor(pingResult.getColor());
+        pingIpResult.setNetworkStatus(pingResult.getNetworkStatus());
+        pingIpResult.setStatusName(pingResult.getStatusName());
+        pingIpResult.setIpInfoId(ipInfos.get(0).getId());
+        pingIpResultRepository.save(pingIpResult);
     }
 
     //若line含有=18ms TTL=16字样,说明已经ping通,返回1,否則返回0.
