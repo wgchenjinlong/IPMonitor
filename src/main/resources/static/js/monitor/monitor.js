@@ -1,8 +1,8 @@
 ;
 $(function () {
-    setTimeout(getResult, 10000);
-    // ping();
-    // setTimeout(ping, 20000);
+    // setTimeout(getResult, 10000);
+    ping();
+    setTimeout(ping, 10000);
     var $save = $('#save');
     $save.on('click', function () {
         validateIpInfo();
@@ -164,6 +164,7 @@ var getResult = function () {
         success: function (data) {
 
             console.log(data);
+
 
             // hasError = isShowSound();
             // if (hasError) {

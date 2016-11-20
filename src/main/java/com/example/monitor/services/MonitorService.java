@@ -2,9 +2,7 @@ package com.example.monitor.services;
 
 import com.example.monitor.domain.PingResult;
 import com.example.monitor.domain.models.IpInfo;
-import com.example.monitor.domain.models.PingIpResult;
 import com.example.monitor.repositories.IpInfoRepository;
-import com.example.monitor.repositories.PingIpResultRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,9 +22,6 @@ public class MonitorService {
 
     @Autowired
     private IpInfoRepository ipInfoRepository;
-
-    @Autowired
-    private PingIpResultRepository pingIpResultRepository;
 
     public List<IpInfo> getIpList() {
 
@@ -44,8 +41,13 @@ public class MonitorService {
         return status;
     }
 
-
-    public PingResult ping(String ipAddress, int pingTimes, int timeOut) {
+//public static void main(String args[]) {
+//    MonitorService ms = new MonitorService();
+//    PingResult ping = ms.ping("192.168.0.101", 10, 3000);
+//    System.out.println(ping.getLost());
+//
+//}
+    public PingResult ping(String ipAddress, int pingTimes, double timeOut) {
         BufferedReader in = null;
         Runtime r = Runtime.getRuntime();
         String pingCommand = "ping " + ipAddress + " -n " + pingTimes + " -w " + timeOut;
@@ -54,24 +56,21 @@ public class MonitorService {
             System.out.println(pingCommand);
             Process p = r.exec(pingCommand);
             if (p == null) {
-                pingResult.setLost(0);
                 pingResult.setNetworkStatus(0);
                 return pingResult;
             }
             in = new BufferedReader(new InputStreamReader(p.getInputStream()));   // 逐行检查输出,计算类似出现=23ms TTL=62字样的次数
-            int connectedCount = 0;
+            double connectedCount = 0;
             String line = null;
             while ((line = in.readLine()) != null) {
+                System.out.println(line);
                 connectedCount += getCheckResult(line);
             }
-            pingResult.setLost(connectedCount / pingTimes);
+            System.out.println(connectedCount);
             pingResult.setNetworkStatus(connectedCount / pingTimes);
-
-
             return pingResult;
         } catch (Exception ex) {
             ex.printStackTrace();
-            pingResult.setLost(0);
             pingResult.setNetworkStatus(0);
             return pingResult;
         } finally {
@@ -90,19 +89,7 @@ public class MonitorService {
         System.out.println("ping " + ipAddress + " result:");
         System.out.println("网络状况:" + pingResult.getStatusName());
         System.out.println("丢包率:" + pingResult.getLost());
-//        List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddress);
-//        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfos.get(0).getId());
-        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfoId);
-        if (results.size() != 0) {
-            pingIpResultRepository.delete(results.get(0));
-        }
-        PingIpResult pingIpResult = new PingIpResult();
-        pingIpResult.setLost(pingResult.getLost());
-        pingIpResult.setColor(pingResult.getColor());
-        pingIpResult.setNetworkStatus(pingResult.getNetworkStatus());
-        pingIpResult.setStatusName(pingResult.getStatusName());
-        pingIpResult.setIpInfoId(ipInfoId);
-        pingIpResultRepository.save(pingIpResult);
+        ipInfoRepository.updateIpInfo(pingResult.getLost(), pingResult.getColor(), pingResult.getStatusName(), ipInfoId);
         System.out.println("end async ping " + ipAddress);
     }
 

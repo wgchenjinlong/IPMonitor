@@ -32,7 +32,6 @@ public class AuthenticationFilter implements Filter {
 
             excludedPageArray = excludedPages.split(String.valueOf(';'));
         }
-        System.out.println("filter init");
     }
 
     @Override
@@ -64,7 +63,6 @@ public class AuthenticationFilter implements Filter {
 
         this.excludedPages = null;
         this.excludedPageArray = null;
-        System.out.println("filter destroy");
     }
 
     private boolean isExcludePage(HttpServletRequest request) {
@@ -74,10 +72,8 @@ public class AuthenticationFilter implements Filter {
 
         for (String page : excludedPageArray) {
             // 遍历例外url数组
-            System.out.println("excludedPage : " + page);
             if (strings.length > 1) {
                 if (strings[1].equals(page.substring(1))) {
-                    System.out.println(page + ", you're excluded.");
                     isExcludedPage = true;
                     break;
                 }

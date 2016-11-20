@@ -26,21 +26,27 @@ public class PingResult {
 
     public void setNetworkStatus(double percent) {
 
+        System.out.println(percent);
         if (percent == 0) {
             // 网络异常
             this.networkStatus = IpStatus.ERROR;
             this.color = IpStatus.ERROR.getColor();
             this.statusName = IpStatus.ERROR.getStatusName();
+            this.lost = "100%";
         } else if (percent == 1) {
             // 网络良好
             this.networkStatus = IpStatus.NORMAL;
             this.color = IpStatus.NORMAL.getColor();
             this.statusName = IpStatus.NORMAL.getStatusName();
+            this.lost = "0%";
         } else {
             // 网络阻塞
             this.networkStatus = IpStatus.CONGESTION;
             this.color = IpStatus.CONGESTION.getColor();
             this.statusName = IpStatus.CONGESTION.getStatusName();
+            NumberFormat nt = NumberFormat.getPercentInstance();
+            nt.setMinimumFractionDigits(0);
+            this.lost = nt.format(1-percent);
         }
     }
 
@@ -48,9 +54,4 @@ public class PingResult {
         return lost;
     }
 
-    public void setLost(double percent) {
-        NumberFormat nt = NumberFormat.getPercentInstance();
-        nt.setMinimumFractionDigits(0);
-        this.lost = nt.format(percent);
-    }
 }

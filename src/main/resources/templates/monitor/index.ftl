@@ -30,11 +30,11 @@
         </thead>
         <tbody>
             <#list ipInfos as ipInfo>
-            <tr class="${ipInfo.status.color!}">
+            <tr class="${ipInfo.color!}">
                 <td>${ipInfo?counter}</td>
                 <td>${ipInfo.name!}</td>
-                <td class="ip-address" data-address="${ipInfo.ipAddress!}">${ipInfo.ipAddress!}</td>
-                <td class="status">${ipInfo.status.statusName!}</td>
+                <td class="ip-address" data-address="${ipInfo.ipAddr!}">${ipInfo.ipAddr!}</td>
+                <td class="status">${ipInfo.statusName!}</td>
                 <td>${ipInfo.commit!}</td>
                 <td><a href="#" data-id="${(ipInfo.id)!}" data-toggle="modal"
                        data-target="#deleteModal">

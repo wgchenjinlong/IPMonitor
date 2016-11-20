@@ -1,7 +1,6 @@
 package com.example.monitor.domain.models;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 
 /**
  * Created by Administrator on 2016/10/15.
@@ -24,6 +23,39 @@ public class IpInfo {
     @Basic
     @Column(length = 500)
     private String commit;
+
+    @Column
+    private String lost;
+
+    @Column
+    private String color;
+
+    @Column
+    private String statusName;
+
+    public String getLost() {
+        return lost;
+    }
+
+    public void setLost(String lost) {
+        this.lost = lost;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 
     public Integer getId() {
         return id;

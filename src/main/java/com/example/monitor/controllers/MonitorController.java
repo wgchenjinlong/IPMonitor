@@ -1,13 +1,10 @@
 package com.example.monitor.controllers;
 
-import com.example.monitor.domain.IpStatus;
 import com.example.monitor.domain.PingResult;
 import com.example.monitor.domain.dtos.IpInfoDto;
 import com.example.monitor.domain.forms.IpInfoForm;
 import com.example.monitor.domain.models.IpInfo;
-import com.example.monitor.domain.models.PingIpResult;
 import com.example.monitor.repositories.IpInfoRepository;
-import com.example.monitor.repositories.PingIpResultRepository;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -19,7 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,42 +31,42 @@ public class MonitorController {
     @Autowired
     private IpInfoRepository ipInfoRepository;
 
-    @Autowired
-    private PingIpResultRepository pingIpResultRepository;
-
     @RequestMapping(value = "/monitor", method = RequestMethod.GET)
     public ModelAndView index(Map<String, Object> model) {
-        List<IpInfoDto> list = ipInfoRepository.findIpInfos();
-//        for(IpInfoDto i : list) {
-//            monitorService.asyncPing(i.getIpAddress(), 10, 3000, i.getId());
-//        }
+        List<IpInfo> list = monitorService.getIpList();
         model.put("ipInfos", list);
         return new ModelAndView("monitor/index", model);
     }
 
     @RequestMapping(value = "/monitor/result", method = RequestMethod.GET)
-    public List<IpInfoDto> getResult() {
-        List<IpInfoDto> list = ipInfoRepository.findIpInfos();
+    public List<IpInfo> getResult() {
+        List<IpInfo> list = monitorService.getIpList();
         return list;
     }
 
     @RequestMapping(value = "/monitor/ping", method = RequestMethod.GET)
-    public IpInfoDto ping(@RequestParam String ipAddress) {
+    public IpInfo ping(@RequestParam String ipAddress) {
 
-        IpInfoDto ipInfo = new IpInfoDto();
-        ipInfo.setIpAddress(ipAddress);
+//        IpInfoDto ipInfo = new IpInfoDto();
+        List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddress);
+        int size = ipInfos.size();
+        IpInfo info = new IpInfo();
+        if (size > 0) {
+            info = ipInfos.get(0);
+        }
+//        ipInfo.setIpAddress(ipAddress);
 //        boolean pingResult = monitorService.ping(ipAddress);
 //        ipInfo.setStatus(pingResult ? IpStatus.NORMAL : IpStatus.ERROR);
 //        ipInfo.setColor(pingResult ? IpStatus.NORMAL.getColor() : IpStatus.ERROR.getColor());
 //        ipInfo.setStatusName(pingResult ? IpStatus.NORMAL.getStatusName() : IpStatus.ERROR.getStatusName());
 
-        PingResult pingResult = monitorService.ping(ipAddress, 10, 3000);
-        ipInfo.setStatus(pingResult.getNetworkStatus());
-        ipInfo.setColor(pingResult.getColor());
-        ipInfo.setStatusName(pingResult.getStatusName());
-        ipInfo.setLost(pingResult.getLost());
+//        PingResult pingResult = monitorService.ping(ipAddress, 10, 3000);
+//        ipInfo.setStatus(pingResult.getNetworkStatus());
+//        ipInfo.setColor(pingResult.getColor());
+//        ipInfo.setStatusName(pingResult.getStatusName());
+//        ipInfo.setLost(pingResult.getLost());
 
-        return ipInfo;
+        return info;
     }
 
     @RequestMapping(value = "/monitor/validate", method = RequestMethod.POST)
@@ -160,13 +156,9 @@ public class MonitorController {
             attr.addFlashAttribute("error", "删除失败");
         }
         IpInfo ipInfo = ipInfoRepository.findOne(id);
-        List<PingIpResult> pingIpResults = pingIpResultRepository.findByIpInfoId(id);
         if (ipInfo == null) {
             attr.addFlashAttribute("error", "删除失败");
         } else {
-            if (pingIpResults.size() > 0) {
-                pingIpResultRepository.delete(pingIpResults.get(0));
-            }
             ipInfoRepository.delete(id);
             attr.addFlashAttribute("success", "删除成功");
         }
