@@ -50,7 +50,7 @@ public class PingResult {
 
     public void setLost(double percent) {
         NumberFormat nt = NumberFormat.getPercentInstance();
-        nt.setMinimumFractionDigits(2);
+        nt.setMinimumFractionDigits(0);
         this.lost = nt.format(percent);
     }
 }

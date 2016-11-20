@@ -84,10 +84,15 @@ public class MonitorService {
     }
 
     @Async
-    public void asyncPing(String ipAddress, int pingTimes, int timeOut) {
+    public void asyncPing(String ipAddress, int pingTimes, int timeOut, Integer ipInfoId) {
+        System.out.println("start async ping " + ipAddress);
         PingResult pingResult = ping(ipAddress, pingTimes, timeOut);
-        List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddress);
-        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfos.get(0).getId());
+        System.out.println("ping " + ipAddress + " result:");
+        System.out.println("网络状况:" + pingResult.getStatusName());
+        System.out.println("丢包率:" + pingResult.getLost());
+//        List<IpInfo> ipInfos = ipInfoRepository.findByIp(ipAddress);
+//        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfos.get(0).getId());
+        List<PingIpResult> results = pingIpResultRepository.findByIpInfoId(ipInfoId);
         if (results.size() != 0) {
             pingIpResultRepository.delete(results.get(0));
         }
@@ -96,8 +101,9 @@ public class MonitorService {
         pingIpResult.setColor(pingResult.getColor());
         pingIpResult.setNetworkStatus(pingResult.getNetworkStatus());
         pingIpResult.setStatusName(pingResult.getStatusName());
-        pingIpResult.setIpInfoId(ipInfos.get(0).getId());
+        pingIpResult.setIpInfoId(ipInfoId);
         pingIpResultRepository.save(pingIpResult);
+        System.out.println("end async ping " + ipAddress);
     }
 
     //若line含有=18ms TTL=16字样,说明已经ping通,返回1,否則返回0.

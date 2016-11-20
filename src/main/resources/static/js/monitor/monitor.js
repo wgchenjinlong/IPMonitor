@@ -1,7 +1,8 @@
 ;
 $(function () {
-    ping();
-    setTimeout(ping, 20000);
+    setTimeout(getResult, 10000);
+    // ping();
+    // setTimeout(ping, 20000);
     var $save = $('#save');
     $save.on('click', function () {
         validateIpInfo();
@@ -153,4 +154,34 @@ var isShowSound = function () {
     });
 
     return isShow;
+};
+var getResult = function () {
+
+    $.ajax({
+        type: "GET",
+        url: "monitor/result",
+        dataType: "json",
+        success: function (data) {
+
+            console.log(data);
+
+            // hasError = isShowSound();
+            // if (hasError) {
+            //     //$soundIcon.css('display', 'block');
+            //     createAudio();
+            //     if (!isPlay && !isManual) {
+            //         playSound();
+            //         isPlay = true;
+            //     }
+            //
+            // } else {
+            //     //$soundIcon.css('display', 'none');
+            //     if(isPlay) {
+            //         pauseSound();
+            //     }
+            //     isPlay = false;
+            // }
+        }
+    });
+    setTimeout(getResult, 10000);
 }

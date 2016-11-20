@@ -35,21 +35,18 @@ public class MonitorController {
 
     @RequestMapping(value = "/monitor", method = RequestMethod.GET)
     public ModelAndView index(Map<String, Object> model) {
-
-        List<IpInfoDto> list = new ArrayList();
-        List<IpInfo> ipList = monitorService.getIpList();
-
-        for(IpInfo i : ipList) {
-            IpInfoDto ipInfo = new IpInfoDto();
-            ipInfo.setId(i.getId());
-            ipInfo.setIpAddress(i.getIpAddr());
-            ipInfo.setStatus(IpStatus.UNMONITOR);
-            ipInfo.setName(i.getName());
-            ipInfo.setCommit(i.getCommit());
-            list.add(ipInfo);
-        }
+        List<IpInfoDto> list = ipInfoRepository.findIpInfos();
+//        for(IpInfoDto i : list) {
+//            monitorService.asyncPing(i.getIpAddress(), 10, 3000, i.getId());
+//        }
         model.put("ipInfos", list);
         return new ModelAndView("monitor/index", model);
+    }
+
+    @RequestMapping(value = "/monitor/result", method = RequestMethod.GET)
+    public List<IpInfoDto> getResult() {
+        List<IpInfoDto> list = ipInfoRepository.findIpInfos();
+        return list;
     }
 
     @RequestMapping(value = "/monitor/ping", method = RequestMethod.GET)
