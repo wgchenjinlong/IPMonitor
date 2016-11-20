@@ -15,4 +15,5 @@ public interface PingIpResultRepository extends JpaRepository<PingIpResult, Inte
 
     @Query("from PingIpResult res where res.ipInfoId = :ipInfoId")
     List<PingIpResult> findByIpInfoId(@Param("ipInfoId") Integer ipInfoId);
+
 }

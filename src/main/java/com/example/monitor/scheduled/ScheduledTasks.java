@@ -1,6 +1,6 @@
 package com.example.monitor.scheduled;
 
-import com.example.monitor.domain.dtos.IpInfoDto;
+import com.example.monitor.domain.models.IpInfo;
 import com.example.monitor.repositories.IpInfoRepository;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +28,11 @@ public class ScheduledTasks {
     public void reportCurrentTime() {
         System.out.println("现在时间：" + dateFormat.format(new Date()));
 
-        List<IpInfoDto> list = ipInfoRepository.findIpInfos();
+        List<IpInfo> list = ipInfoRepository.findAll();
         System.out.println(list.size());
 
-        for(IpInfoDto i : list) {
-            monitorService.asyncPing(i.getIpAddress(), 10, 3000, i.getId());
+        for(IpInfo i : list) {
+            monitorService.asyncPing(i.getIpAddr(), 10, 3000, i.getId());
         }
     }
 }

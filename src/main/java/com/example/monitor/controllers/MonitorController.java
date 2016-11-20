@@ -5,7 +5,9 @@ import com.example.monitor.domain.PingResult;
 import com.example.monitor.domain.dtos.IpInfoDto;
 import com.example.monitor.domain.forms.IpInfoForm;
 import com.example.monitor.domain.models.IpInfo;
+import com.example.monitor.domain.models.PingIpResult;
 import com.example.monitor.repositories.IpInfoRepository;
+import com.example.monitor.repositories.PingIpResultRepository;
 import com.example.monitor.services.MonitorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -32,6 +34,9 @@ public class MonitorController {
 
     @Autowired
     private IpInfoRepository ipInfoRepository;
+
+    @Autowired
+    private PingIpResultRepository pingIpResultRepository;
 
     @RequestMapping(value = "/monitor", method = RequestMethod.GET)
     public ModelAndView index(Map<String, Object> model) {
@@ -131,7 +136,7 @@ public class MonitorController {
     public ModelAndView create(@Valid IpInfoForm ipInfoForm, BindingResult result, RedirectAttributes attr) {
 
         if (result.hasErrors()) {
-            for (FieldError field: result.getFieldErrors()) {
+            for (FieldError field : result.getFieldErrors()) {
 
                 System.out.println(field.getDefaultMessage());
             }
@@ -155,9 +160,13 @@ public class MonitorController {
             attr.addFlashAttribute("error", "删除失败");
         }
         IpInfo ipInfo = ipInfoRepository.findOne(id);
+        List<PingIpResult> pingIpResults = pingIpResultRepository.findByIpInfoId(id);
         if (ipInfo == null) {
             attr.addFlashAttribute("error", "删除失败");
         } else {
+            if (pingIpResults.size() > 0) {
+                pingIpResultRepository.delete(pingIpResults.get(0));
+            }
             ipInfoRepository.delete(id);
             attr.addFlashAttribute("success", "删除成功");
         }
