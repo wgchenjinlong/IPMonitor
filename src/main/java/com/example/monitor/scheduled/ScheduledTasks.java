@@ -26,10 +26,10 @@ public class ScheduledTasks {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     @Scheduled(fixedRate = 35000)
     public void reportCurrentTime() {
-        System.out.println("现在时间：" + dateFormat.format(new Date()));
+//        System.out.println("现在时间：" + dateFormat.format(new Date()));
 
         List<IpInfo> list = ipInfoRepository.findAll();
-        System.out.println(list.size());
+//        System.out.println(list.size());
 
         for(IpInfo i : list) {
             monitorService.asyncPing(i.getIpAddr(), 10, 3000, i.getId());

@@ -53,7 +53,7 @@ public class MonitorService {
         String pingCommand = "ping " + ipAddress + " -n " + pingTimes + " -w " + timeOut;
         PingResult pingResult = new PingResult();
         try {
-            System.out.println(pingCommand);
+//            System.out.println(pingCommand);
             Process p = r.exec(pingCommand);
             if (p == null) {
                 pingResult.setNetworkStatus(0);
@@ -63,10 +63,10 @@ public class MonitorService {
             double connectedCount = 0;
             String line = null;
             while ((line = in.readLine()) != null) {
-                System.out.println(line);
+//                System.out.println(line);
                 connectedCount += getCheckResult(line);
             }
-            System.out.println(connectedCount);
+//            System.out.println(connectedCount);
             pingResult.setNetworkStatus(connectedCount / pingTimes);
             return pingResult;
         } catch (Exception ex) {
@@ -84,13 +84,13 @@ public class MonitorService {
 
     @Async
     public void asyncPing(String ipAddress, int pingTimes, int timeOut, Integer ipInfoId) {
-        System.out.println("start async ping " + ipAddress);
+//        System.out.println("start async ping " + ipAddress);
         PingResult pingResult = ping(ipAddress, pingTimes, timeOut);
-        System.out.println("ping " + ipAddress + " result:");
-        System.out.println("网络状况:" + pingResult.getStatusName());
-        System.out.println("丢包率:" + pingResult.getLost());
+//        System.out.println("ping " + ipAddress + " result:");
+//        System.out.println("网络状况:" + pingResult.getStatusName());
+//        System.out.println("丢包率:" + pingResult.getLost());
         ipInfoRepository.updateIpInfo(pingResult.getLost(), pingResult.getColor(), pingResult.getStatusName(), ipInfoId);
-        System.out.println("end async ping " + ipAddress);
+//        System.out.println("end async ping " + ipAddress);
     }
 
     //若line含有=18ms TTL=16字样,说明已经ping通,返回1,否則返回0.

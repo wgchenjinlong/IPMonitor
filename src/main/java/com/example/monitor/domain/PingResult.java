@@ -26,7 +26,7 @@ public class PingResult {
 
     public void setNetworkStatus(double percent) {
 
-        System.out.println(percent);
+//        System.out.println(percent);
         if (percent == 0) {
             // 网络异常
             this.networkStatus = IpStatus.ERROR;
