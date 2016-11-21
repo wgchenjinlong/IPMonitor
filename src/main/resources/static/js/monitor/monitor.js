@@ -49,6 +49,8 @@ var ping = function () {
                     $statusTd = $(this);
                     if ($statusTd.attr('class') == 'status') {
                         $statusTd.html(data['statusName']);
+                    } else if ($statusTd.attr('class') == 'lost') {
+                        $statusTd.html(data['lost']);
                     }
                 });
                 //var $soundIcon = $('.sound-icon');

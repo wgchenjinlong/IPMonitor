@@ -24,6 +24,7 @@
                 <th width="20%">名称</th>
                 <th>IP地址</th>
                 <th>状态</th>
+                <th>丢包率</th>
                 <th width="30%">备注</th>
                 <th>操作</th>
             </tr>
@@ -35,6 +36,7 @@
                 <td>${ipInfo.name!}</td>
                 <td class="ip-address" data-address="${ipInfo.ipAddr!}">${ipInfo.ipAddr!}</td>
                 <td class="status">${ipInfo.statusName!}</td>
+                <td class="lost">${ipInfo.lost!}</td>
                 <td>${ipInfo.commit!}</td>
                 <td><a href="#" data-id="${(ipInfo.id)!}" data-toggle="modal"
                        data-target="#deleteModal">
