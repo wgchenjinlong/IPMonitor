@@ -55,6 +55,13 @@ public class HelpController {
         return new ModelAndView("help/show", model);
     }
 
+    @RequestMapping(value = "/help/edit/{id}", method = RequestMethod.GET)
+    public Help edit(@PathVariable Integer id) {
+
+        Help help = helpRepository.findOne(id);
+        return help;
+    }
+
     @RequestMapping(value = "/help/add", method = RequestMethod.POST)
     public ModelAndView create(@Valid HelpForm helpForm, BindingResult result, RedirectAttributes attr) {
 
@@ -72,6 +79,23 @@ public class HelpController {
         help.setAnswer(helpForm.getAnswer());
         helpRepository.save(help);
         attr.addFlashAttribute("success", "添加成功");
+        return new ModelAndView(new RedirectView("/help", true));
+    }
+
+    @RequestMapping(value = "/help/edit", method = RequestMethod.POST)
+    public ModelAndView edit(@Valid HelpForm helpForm, BindingResult result, RedirectAttributes attr) {
+
+        if (result.hasErrors()) {
+            for (FieldError field: result.getFieldErrors()) {
+
+                System.out.println(field.getDefaultMessage());
+            }
+            attr.addFlashAttribute("error", "更新失败");
+            return new ModelAndView(new RedirectView("/help", true));
+        }
+
+        helpRepository.updateHelp(helpForm.getQuestion(), helpForm.getAnswer(), helpForm.getId());
+        attr.addFlashAttribute("success", "更新成功");
         return new ModelAndView(new RedirectView("/help", true));
     }
 

@@ -8,11 +8,21 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public class HelpForm {
 
+    private Integer id;
+
     @NotBlank
     @Length(max = 1000)
     private String question;
     @Length(max = 10000)
     private String answer;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getQuestion() {
         return question;

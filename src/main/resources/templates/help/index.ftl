@@ -21,6 +21,7 @@
     <div class="row help-row">
         <div class="col-xs-12 col-md-8"><a href="/help/show/${(help.id)!}">${help.question}</a></div>
         <div class="col-xs-6 col-md-4">
+            <a href="javascript:void(0);" data-id="${(help.id)!}" class="edit-help">编辑</a>
             <a href="#" data-id="${(help.id)!}" data-toggle="modal"
                data-target="#deleteModal">删除</a>
         </div>
